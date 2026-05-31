@@ -43,6 +43,60 @@ export async function invokeBackend(action: string, payload: any, onStepUpdate?:
 
         const json = await response.json();
         
+        // Polling para tareas pesadas
+        if (json.taskId && json.status === "processing") {
+            if (onStepUpdate) {
+                onStepUpdate({
+                    id: `proxy-poll-${Date.now()}`,
+                    type: 'analysis',
+                    title: 'Ejecución Asíncrona Iniciada',
+                    content: `El análisis profundo ha comenzado (ID: ${json.taskId}). Monitorizando resultados en segundo plano para evitar cortes de red...`,
+                    confidence: 1.0,
+                    timestamp: Date.now()
+                });
+            }
+
+            return await new Promise((resolve, reject) => {
+                const pollInterval = setInterval(async () => {
+                    try {
+                        const statusRes = await fetch(`/api/invoke-gemini/status/${json.taskId}`, {
+                            headers, credentials: 'include'
+                        });
+                        
+                        if (!statusRes.ok) {
+                            clearInterval(pollInterval);
+                            reject(new Error(`Error al consultar estado: HTTP ${statusRes.status}`));
+                            return;
+                        }
+
+                        const statusJson = await statusRes.json();
+                        
+                        if (statusJson.status === "completed") {
+                            clearInterval(pollInterval);
+                            if (onStepUpdate) {
+                                onStepUpdate({
+                                    id: `proxy-end-${Date.now()}`,
+                                    type: 'verdict',
+                                    title: 'Análisis Completado',
+                                    content: 'Respuesta recibida criptográficamente desde el servidor.',
+                                    confidence: 1.0,
+                                    timestamp: Date.now()
+                                });
+                            }
+                            resolve(statusJson.data);
+                        } else if (statusJson.status === "error") {
+                            clearInterval(pollInterval);
+                            reject(new Error(statusJson.error || "Fallo en la tarea de procesamiento en segundo plano."));
+                        }
+                        // Si status es "processing", sigue esperando...
+                    } catch (err) {
+                        clearInterval(pollInterval);
+                        reject(err);
+                    }
+                }, 3000); // Consultar cada 3 segundos
+            });
+        }
+        
         if (onStepUpdate) {
             onStepUpdate({
                 id: `proxy-end-${Date.now()}`,
@@ -53,10 +107,6 @@ export async function invokeBackend(action: string, payload: any, onStepUpdate?:
                 timestamp: Date.now()
             });
         }
-
-        // NOTA: El cálculo matemático y el guardado del consumo de Tokens ahora 
-        // se maneja nativamente en Vercel (invoke-gemini.ts) y se guarda
-        // directamente en Supabase (api_usage_logs). Eliminado de localStorage.
 
         return json.data;
     } catch (error: any) {
