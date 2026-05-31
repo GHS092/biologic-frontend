@@ -17,10 +17,9 @@ image = modal.Image.from_dockerfile(
     image=image,
     secrets=[modal.Secret.from_name("biologic-secrets")],
     timeout=600,
-    min_containers=1 # Opcional: mantener una instancia activa para evitar arranques en frío
+    min_containers=1
 )
 @modal.web_server(8000)
 def fastapi_server():
-    # En Modal web_server, no necesitamos devolver nada de Python. 
-    # El decorador se encarga de exponer el puerto 8000 que arranca el CMD del Dockerfile.
-    pass
+    import subprocess
+    subprocess.Popen(["uvicorn", "app:web_app", "--host", "0.0.0.0", "--port", "8000"], cwd="/app").wait()
