@@ -1,0 +1,307 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700;800&display=swap');
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+:root {
+  --bg: #f9fafb;
+  --ink: #111827;
+  --accent: #10b981;
+  --accent-muted: rgba(16, 185, 129, 0.1);
+  --border: #e5e7eb;
+  --card: #ffffff;
+  --sidebar: #f3f4f6;
+}
+
+.dark {
+  --bg: #050505;
+  --ink: #e2e2e2;
+  --accent: #10b981;
+  --accent-muted: rgba(16, 185, 129, 0.1);
+  --border: #1a1a1a;
+  --card: #0d0d0d;
+  --sidebar: #080808;
+}
+
+.theme-clinical {
+  --accent: #0891b2;
+  /* cyan-600 */
+  --accent-muted: rgba(8, 145, 178, 0.1);
+}
+
+.dark.theme-clinical {
+  --accent: #06b6d4;
+  /* cyan-500 */
+  --accent-muted: rgba(6, 182, 212, 0.1);
+}
+
+.theme-immunology {
+  --accent: #9333ea;
+  /* purple-600 */
+  --accent-muted: rgba(147, 51, 234, 0.1);
+}
+
+.dark.theme-immunology {
+  --accent: #a855f7;
+  /* purple-500 */
+  --accent-muted: rgba(168, 85, 247, 0.1);
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* Strict Grid Structure */
+.technical-grid {
+  background-image:
+    linear-gradient(to right, var(--border) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--border) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.immunology-grid {
+  background-image:
+    linear-gradient(to right, var(--border) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--border) 1px, transparent 1px),
+    radial-gradient(circle at 20px 20px, var(--accent-muted) 1px, transparent 0);
+  background-size: 40px 40px, 40px 40px, 20px 20px;
+}
+
+.glow-accent {
+  box-shadow: 0 0 15px var(--accent-muted);
+}
+
+/* Virulence Factor Animation */
+@keyframes pulse-soft {
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.8;
+    transform: scale(0.98);
+  }
+}
+
+.virulence-tag {
+  position: relative;
+  overflow: hidden;
+}
+
+.virulence-tag::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: 0.5s;
+}
+
+.virulence-tag:hover::after {
+  left: 100%;
+}
+
+/* Custom Scrollbar - Minimalist */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 0;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}
+
+/* Typography Refinements */
+h1,
+h2,
+h3 {
+  letter-spacing: -0.02em;
+}
+
+.mono-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* Markdown Custom Styles */
+.markdown-body {
+  font-family: var(--font-sans);
+}
+
+.markdown-body p {
+  margin-bottom: 1em;
+}
+
+.markdown-body p:last-child {
+  margin-bottom: 0;
+}
+
+.markdown-body ul {
+  list-style-type: disc;
+  padding-left: 1.5em;
+  margin-bottom: 1em;
+}
+
+.markdown-body ol {
+  list-style-type: decimal;
+  padding-left: 1.5em;
+  margin-bottom: 1em;
+}
+
+.markdown-body li::marker {
+  color: var(--accent);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Responsive Containers */
+.main-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  height: calc(100vh - 64px);
+}
+
+@media (min-width: 1024px) {
+  .main-container {
+    grid-template-columns: 380px 1fr;
+  }
+}
+
+/* Card Styling - Strict */
+.strict-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 0;
+  /* Square corners for a more "strict" feel */
+}
+
+.strict-card:hover {
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+/* Mobile Adjustments */
+@media (max-width: 640px) {
+  .technical-grid {
+    background-size: 20px 20px;
+  }
+}
+
+/* Print Styles - Native PDF Export */
+@media print {
+
+  body,
+  html {
+    background: white !important;
+    color: black !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  .dark body,
+  .dark html {
+    background: #0a0a0c !important;
+    color: #e2e2e2 !important;
+  }
+
+  aside,
+  header,
+  nav,
+  .chat-input-area,
+  .print-hidden,
+  button {
+    display: none !important;
+  }
+
+  body,
+  html,
+  #root {
+    display: block !important;
+    height: auto !important;
+    min-height: auto !important;
+    overflow: visible !important;
+    position: static !important;
+  }
+
+  /* Resetear solo los divs contenedores externos que limitan la altura */
+  #root>div,
+  #root>div>div,
+  .main-container,
+  .main-container>div {
+    display: block !important;
+    height: auto !important;
+    min-height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    position: static !important;
+  }
+
+  #pdf-report-content {
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    overflow: visible !important;
+    padding: 10px !important;
+    margin: 0 !important;
+  }
+
+  .strict-card,
+  .border,
+  .bg-white,
+  .rounded-2xl {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    box-shadow: none !important;
+  }
+
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}
