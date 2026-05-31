@@ -19,7 +19,13 @@ image = modal.Image.from_dockerfile(
     timeout=600,
     min_containers=1
 )
-@modal.web_server(8000)
+@modal.web_server(8000, startup_timeout=60)
 def fastapi_server():
     import subprocess
-    subprocess.Popen(["uvicorn", "app:web_app", "--host", "0.0.0.0", "--port", "8000"], cwd="/app").wait()
+    import sys
+    subprocess.Popen(
+        ["python", "-m", "uvicorn", "app:web_app", "--host", "0.0.0.0", "--port", "8000"],
+        cwd="/app",
+        stdout=sys.stdout,
+        stderr=sys.stderr
+    )
