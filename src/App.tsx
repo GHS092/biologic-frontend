@@ -505,7 +505,7 @@ const healText = (text: string) => {
   if (!text || typeof text !== 'string') return text;
   
   // Bugfix: Gemini 2.5 Flash under heavy load produces Z, Y, n, p or invisible bytes instead of accented characters.
-  const b = "[\\sZYnp\\u2B06]+";
+  const b = "[\\sZYnp\\u2B06\\ufffd]+";
   
   let formatted = text
     .replace(new RegExp(`radiograf${b}a`, 'gi'), 'radiografía')
@@ -559,8 +559,10 @@ const healText = (text: string) => {
     .replace(new RegExp(`l${b}quida`, 'gi'), 'líquida')
     .replace(new RegExp(`l${b}quido`, 'gi'), 'líquido')
     .replace(new RegExp(`asociaci${b}n`, 'gi'), 'asociación')
+    .replace(new RegExp(`ra${b}z\\b`, 'gi'), 'raíz')
     .replace(new RegExp(`ra${b}ces`, 'gi'), 'raíces')
     .replace(new RegExp(`im${b}genes`, 'gi'), 'imágenes')
+    .replace(new RegExp(`im${b}gen\\b`, 'gi'), 'imagen')
     .replace(new RegExp(`tambi${b}n\\b`, 'gi'), 'también')
     .replace(new RegExp(`diferenciaci${b}n`, 'gi'), 'diferenciación')
     .replace(new RegExp(`dif${b}cil`, 'gi'), 'difícil')
@@ -573,9 +575,30 @@ const healText = (text: string) => {
     .replace(new RegExp(`confirmaci${b}n`, 'gi'), 'confirmación')
     .replace(new RegExp(`m${b}trica`, 'gi'), 'métrica')
     .replace(new RegExp(`a${b}os\\b`, 'gi'), 'años')
-    .replace(new RegExp(`m${b}dico`, 'gi'), 'médico');
+    .replace(new RegExp(`m${b}dico`, 'gi'), 'médico')
+    .replace(new RegExp(`dilataci${b}n`, 'gi'), 'dilatación')
+    .replace(new RegExp(`qu${b}stica`, 'gi'), 'quística')
+    .replace(new RegExp(`qu${b}stico`, 'gi'), 'quístico')
+    .replace(new RegExp(`qu${b}sticas`, 'gi'), 'quísticas')
+    .replace(new RegExp(`qu${b}sticos`, 'gi'), 'quísticos')
+    .replace(new RegExp(`cong${b}nito`, 'gi'), 'congénito')
+    .replace(new RegExp(`cong${b}nitos`, 'gi'), 'congénitos')
+    .replace(new RegExp(`cong${b}nita`, 'gi'), 'congénita')
+    .replace(new RegExp(`met${b}stasis`, 'gi'), 'metástasis')
+    .replace(new RegExp(`broncong${b}nico`, 'gi'), 'broncogénico')
+    .replace(new RegExp(`broncog${b}nico`, 'gi'), 'broncogénico')
+    .replace(new RegExp(`neuroent${b}rico`, 'gi'), 'neuroentérico')
+    .replace(new RegExp(`ect${b}pic`, 'gi'), 'ectópic')
+    .replace(new RegExp(`categor${b}a`, 'gi'), 'categoría')
+    .replace(new RegExp(`ves${b}culas`, 'gi'), 'vesículas')
+    .replace(new RegExp(`epidemiolog${b}a`, 'gi'), 'epidemiología')
+    .replace(new RegExp(`gastroesof${b}gica`, 'gi'), 'gastroesofágica')
+    .replace(new RegExp(`tama${b}o`, 'gi'), 'tamaño')
+    .replace(new RegExp(`anomal${b}as`, 'gi'), 'anomalías')
+    .replace(new RegExp(`t${b}pica`, 'gi'), 'típica')
+    .replace(new RegExp(`t${b}pico`, 'gi'), 'típico');
 
-  return formatted.replace(/\\n/g, '\n').replace(/<br\s*\/?>/gi, '\n\n').replace(/\s* \s*/g, '\n\n');
+  return formatted.replace(/\\n/g, '\n').replace(/<br\s*\/?>/gi, '\n\n');
 };
 
 export default function App() {
