@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @license
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -500,6 +500,56 @@ const CopyButton = ({ text }: { text: string }) => {
   );
 };
 
+
+const healText = (text: string) => {
+  if (!text || typeof text !== 'string') return text;
+  let formatted = text
+    .replace(/radiograf\s*pa/gi, 'radiografía')
+    .replace(/morfolog\s*pa/gi, 'morfología')
+    .replace(/anat\s*pmica/gi, 'anatómica')
+    .replace(/volum\s*ptrpica/gi, 'volumétrica')
+    .replace(/mediast\s*p\s*nico/gi, 'mediastínico')
+    .replace(/extensi\s*pn/gi, 'extensión')
+    .replace(/descripci\s*pn/gi, 'descripción')
+    .replace(/precisi\s*pn/gi, 'precisión')
+    .replace(/medici\s*pn/gi, 'medición')
+    .replace(/lesi\s*pn/gi, 'lesión')
+    .replace(/adenopat\s*pas/gi, 'adenopatías')
+    .replace(/\bpseas\b/gi, 'óseas')
+    .replace(/se\s+alar/gi, 'señalar')
+    .replace(/espec\s+ficos/gi, 'específicos')
+    .replace(/homog\s*nnea/gi, 'homogénea')
+    .replace(/invasi\s*n/gi, 'invasión')
+    .replace(/patol\s*n\s*gico/gi, 'patológico')
+    .replace(/mielopat\s*n\s*a/gi, 'mielopatía')
+    .replace(/din\s*nmicos/gi, 'dinámicos')
+    .replace(/correlaci\s*n/gi, 'correlación')
+    .replace(/quir\s*rgica/gi, 'quirúrgica')
+    .replace(/m\s*n\s*s/gi, 'más')
+    .replace(/tor\s*n\s*cico/gi, 'torácico')
+    .replace(/morfol\s*n\s*gicamente/gi, 'morfológicamente')
+    .replace(/s\s*n\s*tomas/gi, 'síntomas')
+    .replace(/espec\s*n\s*ficos/gi, 'específicos')
+    .replace(/v\s*n\s*lida/gi, 'válida')
+    .replace(/radiol\s*n\s*gico/gi, 'radiológico')
+    .replace(/s\s*n\s*lidos/gi, 'sólidos')
+    .replace(/destrucci\s*n/gi, 'destrucción')
+    .replace(/distinci\s*n/gi, 'distinción')
+    .replace(/caracter\s*n\s*sticas/gi, 'características')
+    .replace(/se\s*n\s*al/gi, 'señal')
+    .replace(/regi\s*n/gi, 'región')
+    .replace(/presentaci\s*n/gi, 'presentación')
+    .replace(/conexi\s*n/gi, 'conexión')
+    .replace(/evaluaci\s*n/gi, 'evaluación')
+
+    .replace(/patolog\s*pa/gi, 'patología')
+    .replace(/ci\s*pn/gi, 'ción')
+    .replace(/log\s*pa/gi, 'logía')
+    .replace(/diagn\s*stico/gi, 'diagnóstico')
+    .replace(/diagn\s*stica/gi, 'diagnóstica');
+  return formatted.replace(/\\n/g, '\n').replace(/<br\s*\/?>/gi, '\n\n').replace(/\s* \s*/g, '\n\n');
+};
+
 export default function App() {
   const [currentHash, setCurrentHash] = useState(window.location.hash);
 
@@ -525,7 +575,7 @@ export default function App() {
 
   const [appMode, setAppMode] = useState<'investigator' | 'clinical' | 'epidemiology_macro' | 'immunology'>('investigator');
   const [isSocraticMode, setIsSocraticMode] = useState(false);
-  const [isDebateMode, setIsDebateMode] = useState(false);
+  const [isDebateMode, setIsDebateMode] = useState(true);
   const [topic, setTopic] = useState('');
   const [searchCategory, setSearchCategory] = useState('Todas');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -3142,7 +3192,7 @@ INSTRUCCIÓN: Borra la pizarra. Analiza nuevamente las imágenes adjuntas pero u
                                       factor.impact === 'barrera' ? "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-400 dark:border-emerald-500/30" :
                                         "bg-gray-100 text-gray-600 border-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-700"
                                   )}>
-                                    {factor.impact}
+                                    {healText(factor.impact)}
                                   </span>
                                 </div>
                                 <p className="text-xs text-gray-600 dark:text-gray-400">{factor.description}</p>
@@ -3198,7 +3248,7 @@ INSTRUCCIÓN: Borra la pizarra. Analiza nuevamente las imágenes adjuntas pero u
                                     Riesgo {threat.riskLevel}
                                   </span>
                                 </div>
-                                <ReactMarkdown className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed" remarkPlugins={[remarkGfm]}>{threat.rationale}</ReactMarkdown>
+                                <ReactMarkdown className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed" remarkPlugins={[remarkGfm]}>{healText(threat.rationale)}</ReactMarkdown>
                               </div>
                             ))}
                           </div>
@@ -3219,7 +3269,7 @@ INSTRUCCIÓN: Borra la pizarra. Analiza nuevamente las imágenes adjuntas pero u
                                     style={{ width: `${pred.probability * 100}%` }}
                                   />
                                 </div>
-                                <ReactMarkdown className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed" remarkPlugins={[remarkGfm]}>{pred.rationale}</ReactMarkdown>
+                                <ReactMarkdown className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed" remarkPlugins={[remarkGfm]}>{healText(pred.rationale)}</ReactMarkdown>
                                 <p className="text-[10px] font-bold text-indigo-600 dark:text-indigo-400 mt-2 uppercase tracking-widest">Probabilidad: {(pred.probability * 100).toFixed(0)}%</p>
                               </div>
                             ))}
@@ -3249,7 +3299,7 @@ INSTRUCCIÓN: Borra la pizarra. Analiza nuevamente las imágenes adjuntas pero u
                               </span>
                             </div>
                             <p className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 mb-1">Factor de Riesgo: {vuln.riskFactor}</p>
-                            <ReactMarkdown className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed" remarkPlugins={[remarkGfm]}>{vuln.rationale}</ReactMarkdown>
+                            <ReactMarkdown className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed" remarkPlugins={[remarkGfm]}>{healText(vuln.rationale)}</ReactMarkdown>
                           </div>
                         ))}
                       </div>
@@ -3329,7 +3379,7 @@ INSTRUCCIÓN: Borra la pizarra. Analiza nuevamente las imágenes adjuntas pero u
                             </div>
                             <div>
                               <h4 className="text-sm font-bold text-gray-900 dark:text-white mb-1">{measure.action}</h4>
-                              <ReactMarkdown className="text-xs text-gray-600 dark:text-gray-400 mb-2" remarkPlugins={[remarkGfm]}>{measure.rationale}</ReactMarkdown>
+                              <ReactMarkdown className="text-xs text-gray-600 dark:text-gray-400 mb-2" remarkPlugins={[remarkGfm]}>{healText(measure.rationale)}</ReactMarkdown>
                               <span className="text-[9px] font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400">Prioridad {measure.priority}</span>
                             </div>
                           </div>
@@ -3713,7 +3763,7 @@ INSTRUCCIÓN: Borra la pizarra. Analiza nuevamente las imágenes adjuntas pero u
                                 Afinidad {rec.bindingAffinity}
                               </span>
                             </div>
-                            <ReactMarkdown className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed" remarkPlugins={[remarkGfm]}>{rec.rationale}</ReactMarkdown>
+                            <ReactMarkdown className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed" remarkPlugins={[remarkGfm]}>{healText(rec.rationale)}</ReactMarkdown>
                           </div>
                         ))}
                       </div>
@@ -3763,7 +3813,7 @@ INSTRUCCIÓN: Borra la pizarra. Analiza nuevamente las imágenes adjuntas pero u
                               <h5 className="text-sm font-bold text-purple-800 dark:text-purple-300 pr-2">{resp.cellType}</h5>
                               <span className="px-3 py-1.5 text-[10px] font-bold tracking-widest uppercase rounded shadow-sm border bg-purple-50 dark:bg-purple-500/10 text-purple-700 dark:text-purple-300 border-purple-200 dark:border-purple-500/30 w-fit self-start break-words">{resp.activationLevel}</span>
                             </div>
-                            <ReactMarkdown className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed mb-3" remarkPlugins={[remarkGfm]}>{resp.rationale}</ReactMarkdown>
+                            <ReactMarkdown className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed mb-3" remarkPlugins={[remarkGfm]}>{healText(resp.rationale)}</ReactMarkdown>
                             <div className="flex flex-wrap gap-1.5">
                               {resp.cytokineProfile.map((cyt, i) => (
                                 <span key={i} className="px-2 py-1 bg-purple-50 dark:bg-purple-500/10 text-purple-700 dark:text-purple-300 text-[10px] font-medium rounded-md border border-purple-200 dark:border-purple-500/30">
@@ -3876,7 +3926,7 @@ INSTRUCCIÓN: Borra la pizarra. Analiza nuevamente las imágenes adjuntas pero u
                                 Tipo: {immunologyAnalysis.tumorSurveillance.microenvironmentType}
                               </span>
                             </div>
-                            <ReactMarkdown className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed" remarkPlugins={[remarkGfm]}>{immunologyAnalysis.tumorSurveillance.rationale}</ReactMarkdown>
+                            <ReactMarkdown className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed" remarkPlugins={[remarkGfm]}>{healText(immunologyAnalysis.tumorSurveillance.rationale)}</ReactMarkdown>
                           </div>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             {immunologyAnalysis.tumorSurveillance.metabolicEnvironment && (
@@ -3952,7 +4002,7 @@ INSTRUCCIÓN: Borra la pizarra. Analiza nuevamente las imágenes adjuntas pero u
                                 Riesgo {immunologyAnalysis.autoimmunityRisk.riskLevel}
                               </span>
                             </div>
-                            <ReactMarkdown className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed" remarkPlugins={[remarkGfm]}>{immunologyAnalysis.autoimmunityRisk.molecularMimicryPotential}</ReactMarkdown>
+                            <ReactMarkdown className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed" remarkPlugins={[remarkGfm]}>{healText(immunologyAnalysis.autoimmunityRisk.molecularMimicryPotential)}</ReactMarkdown>
                             <div className="mt-3 pt-3 border-t border-orange-200 dark:border-orange-500/20">
                               <p className="text-[10px] font-bold text-orange-700 dark:text-orange-400 uppercase tracking-widest mb-1">Mecanismo de Ruptura:</p>
                               <p className="text-xs text-gray-600 dark:text-gray-400">{immunologyAnalysis.autoimmunityRisk.toleranceBreakdownMechanism}</p>
@@ -3980,7 +4030,7 @@ INSTRUCCIÓN: Borra la pizarra. Analiza nuevamente las imágenes adjuntas pero u
                           <div key={idx} className="flex flex-col sm:flex-row gap-4 p-4 bg-gray-50 dark:bg-white/5 border border-black/5 dark:border-white/5 rounded-md">
                             <div className="flex-1">
                               <h4 className="text-sm font-bold text-gray-900 dark:text-white mb-1">{sim.strategy}</h4>
-                              <ReactMarkdown className="text-xs text-gray-600 dark:text-gray-400 mb-2" remarkPlugins={[remarkGfm]}>{sim.rationale}</ReactMarkdown>
+                              <ReactMarkdown className="text-xs text-gray-600 dark:text-gray-400 mb-2" remarkPlugins={[remarkGfm]}>{healText(sim.rationale)}</ReactMarkdown>
                               <div className="flex flex-wrap gap-2 mt-2">
                                 <span className="text-[10px] font-mono text-gray-500 dark:text-gray-400">Variantes de Escape:</span>
                                 {sim.escapeVariants.map((v, i) => (
@@ -4337,7 +4387,7 @@ INSTRUCCIÓN: Borra la pizarra. Analiza nuevamente las imágenes adjuntas pero u
                       )}
 
                       <div className="prose prose-sm dark:prose-invert max-w-none text-gray-700 dark:text-gray-300 prose-p:leading-relaxed prose-li:marker:text-cyan-500 prose-ul:pl-4 prose-ol:pl-4 prose-li:my-1">
-                        <ReactMarkdown remarkPlugins={[remarkGfm]}>{formatBoardSummary(clinicalAnalysis.summary)}</ReactMarkdown>
+                        <ReactMarkdown remarkPlugins={[remarkGfm]}>{healText(formatBoardSummary(clinicalAnalysis.summary))}</ReactMarkdown>
                       </div>
 
                       {clinicalAnalysis.physicalExam && (
@@ -4668,7 +4718,7 @@ INSTRUCCIÓN: Borra la pizarra. Analiza nuevamente las imágenes adjuntas pero u
 
                               <div>
                                 <h5 className="text-xs font-bold text-gray-700 dark:text-gray-300 mb-1 uppercase tracking-wider">Interpretación:</h5>
-                                <ReactMarkdown className="text-xs text-gray-600 dark:text-gray-400" remarkPlugins={[remarkGfm]}>{finding.interpretation}</ReactMarkdown>
+                                <ReactMarkdown className="text-xs text-gray-600 dark:text-gray-400" remarkPlugins={[remarkGfm]}>{healText(finding.interpretation)}</ReactMarkdown>
                               </div>
                             </div>
                           ))}
@@ -4752,7 +4802,7 @@ INSTRUCCIÓN: Borra la pizarra. Analiza nuevamente las imágenes adjuntas pero u
                           {clinicalAnalysis.confoundingFactors.map((factor, idx) => (
                             <div key={idx} className="bg-white dark:bg-black/40 border border-violet-500/20 p-4 rounded-md">
                               <h4 className="text-sm font-bold text-violet-600 dark:text-violet-400 mb-2">{factor.factor}</h4>
-                              <ReactMarkdown className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed" remarkPlugins={[remarkGfm]}>{factor.impact}</ReactMarkdown>
+                              <ReactMarkdown className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed" remarkPlugins={[remarkGfm]}>{healText(factor.impact)}</ReactMarkdown>
                             </div>
                           ))}
                         </div>
@@ -4775,7 +4825,7 @@ INSTRUCCIÓN: Borra la pizarra. Analiza nuevamente las imágenes adjuntas pero u
                                   {item.expectedIn}
                                 </div>
                               </div>
-                              <ReactMarkdown className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed" remarkPlugins={[remarkGfm]}>{item.clinicalSignificance}</ReactMarkdown>
+                              <ReactMarkdown className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed" remarkPlugins={[remarkGfm]}>{healText(item.clinicalSignificance)}</ReactMarkdown>
                             </div>
                           ))}
                         </div>
@@ -4792,7 +4842,7 @@ INSTRUCCIÓN: Borra la pizarra. Analiza nuevamente las imágenes adjuntas pero u
                           {clinicalAnalysis.redFlags.map((flag, idx) => (
                             <div key={idx} className="bg-white dark:bg-black/40 border border-rose-500/20 p-4 rounded-md">
                               <h4 className="text-sm font-bold text-rose-600 dark:text-rose-400 mb-1">{flag.condition}</h4>
-                              <ReactMarkdown className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed" remarkPlugins={[remarkGfm]}>{flag.rationale}</ReactMarkdown>
+                              <ReactMarkdown className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed" remarkPlugins={[remarkGfm]}>{healText(flag.rationale)}</ReactMarkdown>
                             </div>
                           ))}
                         </div>
@@ -4873,17 +4923,17 @@ INSTRUCCIÓN: Borra la pizarra. Analiza nuevamente las imágenes adjuntas pero u
                               )}>
                                 Probabilidad {dx.probability}
                               </span>
-                              <h4 className="text-sm font-bold text-gray-900 dark:text-white break-words">{dx.condition}</h4>
+                              <h4 className="text-sm font-bold text-gray-900 dark:text-white break-words">{healText(dx.condition)}</h4>
                             </div>
                             <div className="sm:w-3/4">
-                              <ReactMarkdown className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed" remarkPlugins={[remarkGfm]}>{dx.rationale}</ReactMarkdown>
+                              <ReactMarkdown className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed" remarkPlugins={[remarkGfm]}>{healText(dx.rationale)}</ReactMarkdown>
                               
                               {dx.differentialExclusion && (
                                 <div className="mt-3 p-3 bg-cyan-50/50 dark:bg-cyan-950/20 border border-cyan-100/50 dark:border-cyan-900/30 rounded flex items-start gap-2">
                                   <Shield className="w-4 h-4 text-cyan-600 dark:text-cyan-400 shrink-0 mt-0.5" />
                                   <div className="flex-1">
                                     <h5 className="text-[10px] font-bold text-cyan-800 dark:text-cyan-300 uppercase tracking-widest mb-1">Criterio de Exclusión / Rebaja Médica (XAI)</h5>
-                                    <p className="text-xs text-gray-700 dark:text-gray-300 leading-relaxed">{dx.differentialExclusion}</p>
+                                    <p className="text-xs text-gray-700 dark:text-gray-300 leading-relaxed">{healText(dx.differentialExclusion)}</p>
                                   </div>
                                 </div>
                               )}
@@ -4910,26 +4960,26 @@ INSTRUCCIÓN: Borra la pizarra. Analiza nuevamente las imágenes adjuntas pero u
                               <div className="bg-white dark:bg-black/40 p-4 rounded border border-rose-500/20">
                                 <h4 className="text-xs font-bold text-rose-700 dark:text-rose-300 mb-2 uppercase">Micro-Hallazgos Ocultos</h4>
                                 <div className="prose prose-sm dark:prose-invert max-w-none text-gray-700 dark:text-gray-300 prose-p:leading-relaxed prose-li:marker:text-rose-500 prose-ul:pl-4 prose-ol:pl-4 prose-li:my-1">
-                                  <ReactMarkdown remarkPlugins={[remarkGfm]}>{formatBoardSummary(clinicalAnalysis.redTeamAudit.missedMicroFindings)}</ReactMarkdown>
+                                  <ReactMarkdown remarkPlugins={[remarkGfm]}>{healText(formatBoardSummary(clinicalAnalysis.redTeamAudit.missedMicroFindings))}</ReactMarkdown>
                                 </div>
                               </div>
                               <div className="bg-white dark:bg-black/40 p-4 rounded border border-rose-500/20">
                                 <h4 className="text-xs font-bold text-rose-700 dark:text-rose-300 mb-2 uppercase">Crítica Volumétrica</h4>
                                 <div className="prose prose-sm dark:prose-invert max-w-none text-gray-700 dark:text-gray-300 prose-p:leading-relaxed prose-li:marker:text-rose-500 prose-ul:pl-4 prose-ol:pl-4 prose-li:my-1">
-                                  <ReactMarkdown remarkPlugins={[remarkGfm]}>{formatBoardSummary(clinicalAnalysis.redTeamAudit.volumetryCritique)}</ReactMarkdown>
+                                  <ReactMarkdown remarkPlugins={[remarkGfm]}>{healText(formatBoardSummary(clinicalAnalysis.redTeamAudit.volumetryCritique))}</ReactMarkdown>
                                 </div>
                               </div>
                               <div className="bg-white dark:bg-black/40 p-4 rounded border border-rose-500/20">
                                 <h4 className="text-xs font-bold text-rose-700 dark:text-rose-300 mb-2 uppercase">Correlación Físico-Técnica</h4>
                                 <div className="prose prose-sm dark:prose-invert max-w-none text-gray-700 dark:text-gray-300 prose-p:leading-relaxed prose-li:marker:text-rose-500 prose-ul:pl-4 prose-ol:pl-4 prose-li:my-1">
-                                  <ReactMarkdown remarkPlugins={[remarkGfm]}>{formatBoardSummary(clinicalAnalysis.redTeamAudit.technicalCorrelationCritique)}</ReactMarkdown>
+                                  <ReactMarkdown remarkPlugins={[remarkGfm]}>{healText(formatBoardSummary(clinicalAnalysis.redTeamAudit.technicalCorrelationCritique))}</ReactMarkdown>
                                 </div>
                               </div>
                               {clinicalAnalysis.redTeamAudit.adjacentStructuresCritique && (
                                 <div className="bg-white dark:bg-black/40 p-4 rounded border border-rose-500/20 md:col-span-3">
                                   <h4 className="text-xs font-bold text-rose-700 dark:text-rose-300 mb-2 uppercase">Estructuras Adyacentes Críticas</h4>
                                   <div className="prose prose-sm dark:prose-invert max-w-none text-gray-700 dark:text-gray-300 prose-p:leading-relaxed prose-li:marker:text-rose-500 prose-ul:pl-4 prose-ol:pl-4 prose-li:my-1">
-                                    <ReactMarkdown remarkPlugins={[remarkGfm]}>{formatBoardSummary(clinicalAnalysis.redTeamAudit.adjacentStructuresCritique)}</ReactMarkdown>
+                                    <ReactMarkdown remarkPlugins={[remarkGfm]}>{healText(formatBoardSummary(clinicalAnalysis.redTeamAudit.adjacentStructuresCritique))}</ReactMarkdown>
                                   </div>
                                 </div>
                               )}
@@ -4937,7 +4987,7 @@ INSTRUCCIÓN: Borra la pizarra. Analiza nuevamente las imágenes adjuntas pero u
                                 <div className="bg-white dark:bg-black/40 p-4 rounded border border-rose-500/20 md:col-span-3">
                                   <h4 className="text-xs font-bold text-rose-700 dark:text-rose-300 mb-2 uppercase">Crítica Epidemiológica y Social</h4>
                                   <div className="prose prose-sm dark:prose-invert max-w-none text-gray-700 dark:text-gray-300 prose-p:leading-relaxed prose-li:marker:text-rose-500 prose-ul:pl-4 prose-ol:pl-4 prose-li:my-1">
-                                    <ReactMarkdown remarkPlugins={[remarkGfm]}>{formatBoardSummary(clinicalAnalysis.redTeamAudit.epidemiologicalCritique)}</ReactMarkdown>
+                                    <ReactMarkdown remarkPlugins={[remarkGfm]}>{healText(formatBoardSummary(clinicalAnalysis.redTeamAudit.epidemiologicalCritique))}</ReactMarkdown>
                                   </div>
                                 </div>
                               )}
@@ -4945,7 +4995,7 @@ INSTRUCCIÓN: Borra la pizarra. Analiza nuevamente las imágenes adjuntas pero u
                                 <div className="bg-white dark:bg-black/40 p-4 rounded border border-rose-500/20 md:col-span-3">
                                   <h4 className="text-xs font-bold text-rose-700 dark:text-rose-300 mb-2 uppercase">Integridad de Datos y Alucinaciones</h4>
                                   <div className="prose prose-sm dark:prose-invert max-w-none text-gray-700 dark:text-gray-300 prose-p:leading-relaxed prose-li:marker:text-rose-500 prose-ul:pl-4 prose-ol:pl-4 prose-li:my-1">
-                                    <ReactMarkdown remarkPlugins={[remarkGfm]}>{formatBoardSummary(clinicalAnalysis.redTeamAudit.dataIntegrityCritique)}</ReactMarkdown>
+                                    <ReactMarkdown remarkPlugins={[remarkGfm]}>{healText(formatBoardSummary(clinicalAnalysis.redTeamAudit.dataIntegrityCritique))}</ReactMarkdown>
                                   </div>
                                 </div>
                               )}
@@ -4953,7 +5003,7 @@ INSTRUCCIÓN: Borra la pizarra. Analiza nuevamente las imágenes adjuntas pero u
                                 <div className="bg-white dark:bg-black/40 p-4 rounded border border-rose-500/20 md:col-span-3">
                                   <h4 className="text-xs font-bold text-rose-700 dark:text-rose-300 mb-2 uppercase">Física y Biomecánica</h4>
                                   <div className="prose prose-sm dark:prose-invert max-w-none text-gray-700 dark:text-gray-300 prose-p:leading-relaxed prose-li:marker:text-rose-500 prose-ul:pl-4 prose-ol:pl-4 prose-li:my-1">
-                                    <ReactMarkdown remarkPlugins={[remarkGfm]}>{formatBoardSummary(clinicalAnalysis.redTeamAudit.biomechanicalAndVascularCritique)}</ReactMarkdown>
+                                    <ReactMarkdown remarkPlugins={[remarkGfm]}>{healText(formatBoardSummary(clinicalAnalysis.redTeamAudit.biomechanicalAndVascularCritique))}</ReactMarkdown>
                                   </div>
                                 </div>
                               )}
@@ -4961,7 +5011,7 @@ INSTRUCCIÓN: Borra la pizarra. Analiza nuevamente las imágenes adjuntas pero u
                                 <div className="bg-white dark:bg-black/40 p-4 rounded border border-rose-500/20 md:col-span-3">
                                   <h4 className="text-xs font-bold text-rose-700 dark:text-rose-300 mb-2 uppercase">Artefactos y Puntos Ciegos</h4>
                                   <div className="prose prose-sm dark:prose-invert max-w-none text-gray-700 dark:text-gray-300 prose-p:leading-relaxed prose-li:marker:text-rose-500 prose-ul:pl-4 prose-ol:pl-4 prose-li:my-1">
-                                    <ReactMarkdown remarkPlugins={[remarkGfm]}>{formatBoardSummary(clinicalAnalysis.redTeamAudit.artifactAndBlindSpotsCritique)}</ReactMarkdown>
+                                    <ReactMarkdown remarkPlugins={[remarkGfm]}>{healText(formatBoardSummary(clinicalAnalysis.redTeamAudit.artifactAndBlindSpotsCritique))}</ReactMarkdown>
                                   </div>
                                 </div>
                               )}
@@ -4969,7 +5019,7 @@ INSTRUCCIÓN: Borra la pizarra. Analiza nuevamente las imágenes adjuntas pero u
                                 <div className="bg-white dark:bg-black/40 p-4 rounded border border-rose-500/20 md:col-span-3">
                                   <h4 className="text-xs font-bold text-rose-700 dark:text-rose-300 mb-2 uppercase">Sesgo de Falsa Seguridad</h4>
                                   <div className="prose prose-sm dark:prose-invert max-w-none text-gray-700 dark:text-gray-300 prose-p:leading-relaxed prose-li:marker:text-rose-500 prose-ul:pl-4 prose-ol:pl-4 prose-li:my-1">
-                                    <ReactMarkdown remarkPlugins={[remarkGfm]}>{formatBoardSummary(clinicalAnalysis.redTeamAudit.benignityBiasCritique)}</ReactMarkdown>
+                                    <ReactMarkdown remarkPlugins={[remarkGfm]}>{healText(formatBoardSummary(clinicalAnalysis.redTeamAudit.benignityBiasCritique))}</ReactMarkdown>
                                   </div>
                                 </div>
                               )}
@@ -4977,7 +5027,7 @@ INSTRUCCIÓN: Borra la pizarra. Analiza nuevamente las imágenes adjuntas pero u
                                 <div className="bg-white dark:bg-black/40 p-4 rounded border border-emerald-500/20 md:col-span-3">
                                   <h4 className="text-xs font-bold text-emerald-700 dark:text-emerald-300 mb-2 flex items-center uppercase"><ShieldAlert className="w-4 h-4 mr-2" />Sesgo de Sobre-Patologización</h4>
                                   <div className="prose prose-sm dark:prose-invert max-w-none text-gray-700 dark:text-gray-300 prose-p:leading-relaxed prose-li:marker:text-emerald-500 prose-ul:pl-4 prose-ol:pl-4 prose-li:my-1">
-                                    <ReactMarkdown remarkPlugins={[remarkGfm]}>{formatBoardSummary(clinicalAnalysis.redTeamAudit.overMedicalizationCritique)}</ReactMarkdown>
+                                    <ReactMarkdown remarkPlugins={[remarkGfm]}>{healText(formatBoardSummary(clinicalAnalysis.redTeamAudit.overMedicalizationCritique))}</ReactMarkdown>
                                   </div>
                                 </div>
                               )}
@@ -4996,7 +5046,7 @@ INSTRUCCIÓN: Borra la pizarra. Analiza nuevamente las imágenes adjuntas pero u
                               </div>
                               <h4 className="text-sm font-bold text-gray-900 dark:text-white mb-3 pr-24">{evaluation.hypothesisId}</h4>
                               <div className="text-sm text-gray-700 dark:text-gray-300 prose dark:prose-invert prose-sm max-w-none prose-p:leading-relaxed prose-li:marker:text-cyan-500 prose-ul:pl-4 prose-ol:pl-4 prose-li:my-1">
-                                <ReactMarkdown remarkPlugins={[remarkGfm]}>{formatBoardSummary(evaluation.critique)}</ReactMarkdown>
+                                <ReactMarkdown remarkPlugins={[remarkGfm]}>{healText(formatBoardSummary(evaluation.critique))}</ReactMarkdown>
                               </div>
                             </div>
                           ))}
@@ -5007,7 +5057,7 @@ INSTRUCCIÓN: Borra la pizarra. Analiza nuevamente las imágenes adjuntas pero u
                                 <h4 className="text-sm font-bold uppercase tracking-widest text-cyan-800 dark:text-cyan-300">Consenso Final de la Junta</h4>
                               </div>
                               <div className="prose prose-sm sm:prose-base dark:prose-invert max-w-none text-gray-800 dark:text-gray-200 prose-p:leading-relaxed">
-                                <ReactMarkdown remarkPlugins={[remarkGfm]}>{formatBoardSummary(clinicalAnalysis.boardSummary)}</ReactMarkdown>
+                                <ReactMarkdown remarkPlugins={[remarkGfm]}>{healText(formatBoardSummary(clinicalAnalysis.boardSummary))}</ReactMarkdown>
                               </div>
                             </div>
                           )}
@@ -5029,7 +5079,7 @@ INSTRUCCIÓN: Borra la pizarra. Analiza nuevamente las imágenes adjuntas pero u
                                 <li key={i} className="text-xs text-gray-800 dark:text-gray-200">{test}</li>
                               ))}
                             </ul>
-                            <ReactMarkdown className="text-sm text-gray-600 dark:text-gray-400 italic leading-relaxed" remarkPlugins={[remarkGfm]}>{step.rationale}</ReactMarkdown>
+                            <ReactMarkdown className="text-sm text-gray-600 dark:text-gray-400 italic leading-relaxed" remarkPlugins={[remarkGfm]}>{healText(step.rationale)}</ReactMarkdown>
                           </div>
                         ))}
                       </div>
@@ -5073,7 +5123,7 @@ INSTRUCCIÓN: Borra la pizarra. Analiza nuevamente las imágenes adjuntas pero u
                                 </div>
                               )}
 
-                              <ReactMarkdown className="text-sm text-gray-600 dark:text-gray-400 italic leading-relaxed" remarkPlugins={[remarkGfm]}>{phase.rationale}</ReactMarkdown>
+                              <ReactMarkdown className="text-sm text-gray-600 dark:text-gray-400 italic leading-relaxed" remarkPlugins={[remarkGfm]}>{healText(phase.rationale)}</ReactMarkdown>
                             </div>
                           ))}
                         </div>
@@ -5856,7 +5906,7 @@ INSTRUCCIÓN: Borra la pizarra. Analiza nuevamente las imágenes adjuntas pero u
                               <h4 className="text-[10px] font-bold uppercase tracking-widest text-gray-500 dark:text-white/40 mb-1">Insight Extraído</h4>
                               <div className="text-sm text-gray-700 dark:text-white/80 font-sans leading-relaxed bg-gray-100 dark:bg-black/20 p-3 rounded border border-black/10 dark:border-white/5 markdown-body prose dark:prose-invert prose-sm max-w-none prose-p:leading-relaxed prose-pre:bg-gray-100 dark:prose-pre:bg-black/50 prose-pre:border prose-pre:border-black/10 dark:prose-pre:border-white/10 prose-headings:font-bold">
                                 <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                                  {conn.extractedInsight.replace(/\\n/g, '\n').replace(/<br\s*\/?>/gi, '\n\n').replace(/\s*•\s*/g, '\n\n')}
+                                  {healText(conn.extractedInsight).replace(/<br\s*\/?>/gi, '\n\n').replace(/\s*•\s*/g, '\n\n')}
                                 </ReactMarkdown>
                               </div>
                             </div>
@@ -5865,7 +5915,7 @@ INSTRUCCIÓN: Borra la pizarra. Analiza nuevamente las imágenes adjuntas pero u
                               <h4 className="text-[10px] font-bold uppercase tracking-widest text-gray-500 dark:text-white/40 mb-1">Aplicación al Caso Actual</h4>
                               <div className="text-sm text-gray-700 dark:text-white/80 font-sans leading-relaxed bg-emerald-900/10 p-3 rounded border border-emerald-500/10 markdown-body prose dark:prose-invert prose-sm max-w-none prose-p:leading-relaxed prose-pre:bg-gray-100 dark:prose-pre:bg-black/50 prose-pre:border prose-pre:border-black/10 dark:prose-pre:border-white/10 prose-headings:font-bold">
                                 <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                                  {conn.applicationToCurrent.replace(/\\n/g, '\n').replace(/<br\s*\/?>/gi, '\n\n').replace(/\s*•\s*/g, '\n\n')}
+                                  {healText(conn.applicationToCurrent).replace(/<br\s*\/?>/gi, '\n\n').replace(/\s*•\s*/g, '\n\n')}
                                 </ReactMarkdown>
                               </div>
                             </div>
@@ -5973,7 +6023,7 @@ INSTRUCCIÓN: Borra la pizarra. Analiza nuevamente las imágenes adjuntas pero u
                                             appMode === 'investigator' ? "prose-strong:text-emerald-600 dark:prose-strong:text-emerald-400" : "prose-strong:text-cyan-600 dark:prose-strong:text-cyan-400"
                                           )}>
                                             <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                                              {conn.extractedInsight.replace(/\\n/g, '\n').replace(/<br\s*\/?>/gi, '\n\n').replace(/\s*•\s*/g, '\n\n')}
+                                              {healText(conn.extractedInsight).replace(/<br\s*\/?>/gi, '\n\n').replace(/\s*•\s*/g, '\n\n')}
                                             </ReactMarkdown>
                                           </div>
                                         </div>
@@ -5984,7 +6034,7 @@ INSTRUCCIÓN: Borra la pizarra. Analiza nuevamente las imágenes adjuntas pero u
                                             appMode === 'investigator' ? "prose-strong:text-emerald-600 dark:prose-strong:text-emerald-400" : "prose-strong:text-cyan-600 dark:prose-strong:text-cyan-400"
                                           )}>
                                             <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                                              {conn.applicationToCurrent.replace(/\\n/g, '\n').replace(/<br\s*\/?>/gi, '\n\n').replace(/\s*•\s*/g, '\n\n')}
+                                              {healText(conn.applicationToCurrent).replace(/<br\s*\/?>/gi, '\n\n').replace(/\s*•\s*/g, '\n\n')}
                                             </ReactMarkdown>
                                           </div>
                                         </div>
