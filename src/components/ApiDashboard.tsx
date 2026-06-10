@@ -538,51 +538,65 @@ export default function ApiDashboard() {
               </p>
 
               <div className="space-y-3">
-                {AVAILABLE_MODELS.map(model => (
-                  <div 
-                    key={model} 
-                    onClick={() => { setActiveModel(model); setIsSaved(false); }}
-                    className={`flex items-center justify-between p-3 rounded-xl border cursor-pointer transition-all ${
-                      activeModel === model 
-                        ? (model.includes('3.1') || model.includes('3.5')) ? 'bg-fuchsia-500/10 border-fuchsia-500/50' : 'bg-blue-500/10 border-blue-500/50' 
-                        : 'bg-black/20 border-white/10 hover:border-white/20'
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
-                        activeModel === model ? ((model.includes('3.1') || model.includes('3.5')) ? 'border-fuchsia-400' : 'border-blue-400') : 'border-white/30'
-                      }`}>
-                        {activeModel === model && <div className={`w-2 h-2 rounded-full ${(model.includes('3.1') || model.includes('3.5')) ? 'bg-fuchsia-400' : 'bg-blue-400'}`} />}
-                      </div>
-                      <span className={`font-mono text-sm ${(model.includes('3.1') || model.includes('3.5')) && activeModel === model ? 'text-fuchsia-100 font-bold' : ''}`}>{model}</span>
-                    </div>
-                    {model === 'gemini-3.5-flash' ? (
-                      <span className="text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded uppercase tracking-wider font-bold">
-                        Latest / Free
-                      </span>
-                    ) : model === 'gemini-3.5-flash-experimental' ? (
-                      <span className="text-[10px] bg-cyan-500/20 text-cyan-300 px-2 py-0.5 rounded uppercase tracking-wider font-bold">
-                        Experimental / Free
-                      </span>
-                    ) : model === 'gemini-3.1-pro-preview' ? (
-                      <span className="text-[10px] bg-fuchsia-500/20 text-fuchsia-300 px-2 py-0.5 rounded uppercase tracking-wider font-bold">
-                        Latest / Paid
-                      </span>
-                    ) : model === 'gemini-3.1-flash-lite-preview' ? (
-                      <span className="text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded uppercase tracking-wider font-bold">
-                        Latest / Free
-                      </span>
-                    ) : model.includes('pro') ? (
-                      <span className="text-[10px] bg-white/10 text-white/70 px-2 py-0.5 rounded uppercase tracking-wider font-bold">
-                        Premium
-                      </span>
-                    ) : (
-                      <span className="text-[10px] bg-yellow-500/10 text-yellow-500/70 px-2 py-0.5 rounded uppercase tracking-wider font-bold">
-                        Fast
-                      </span>
-                    )}
+                {apiProvider === 'openrouter' ? (
+                  <div className="bg-black/20 border border-white/10 rounded-xl p-4">
+                    <label className="text-[10px] text-white/50 uppercase tracking-widest font-mono font-bold block mb-2">ID del Modelo OpenRouter</label>
+                    <input 
+                      type="text" 
+                      value={activeModel}
+                      onChange={(e) => { setActiveModel(e.target.value); setIsSaved(false); }}
+                      placeholder="Ej. google/gemma-4-31b-it:free"
+                      className="w-full bg-black/40 border border-indigo-500/30 rounded-lg p-3 text-sm text-indigo-200 placeholder-indigo-500/50 font-mono outline-none focus:border-indigo-400 transition-colors"
+                    />
+                    <p className="text-[10px] text-white/30 mt-2 font-mono uppercase">Encuentra los IDs en openrouter.ai/models</p>
                   </div>
-                ))}
+                ) : (
+                  AVAILABLE_MODELS.map(model => (
+                    <div 
+                      key={model} 
+                      onClick={() => { setActiveModel(model); setIsSaved(false); }}
+                      className={`flex items-center justify-between p-3 rounded-xl border cursor-pointer transition-all ${
+                        activeModel === model 
+                          ? (model.includes('3.1') || model.includes('3.5')) ? 'bg-fuchsia-500/10 border-fuchsia-500/50' : 'bg-blue-500/10 border-blue-500/50' 
+                          : 'bg-black/20 border-white/10 hover:border-white/20'
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
+                          activeModel === model ? ((model.includes('3.1') || model.includes('3.5')) ? 'border-fuchsia-400' : 'border-blue-400') : 'border-white/30'
+                        }`}>
+                          {activeModel === model && <div className={`w-2 h-2 rounded-full ${(model.includes('3.1') || model.includes('3.5')) ? 'bg-fuchsia-400' : 'bg-blue-400'}`} />}
+                        </div>
+                        <span className={`font-mono text-sm ${(model.includes('3.1') || model.includes('3.5')) && activeModel === model ? 'text-fuchsia-100 font-bold' : ''}`}>{model}</span>
+                      </div>
+                      {model === 'gemini-3.5-flash' ? (
+                        <span className="text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded uppercase tracking-wider font-bold">
+                          Latest / Free
+                        </span>
+                      ) : model === 'gemini-3.5-flash-experimental' ? (
+                        <span className="text-[10px] bg-cyan-500/20 text-cyan-300 px-2 py-0.5 rounded uppercase tracking-wider font-bold">
+                          Experimental / Free
+                        </span>
+                      ) : model === 'gemini-3.1-pro-preview' ? (
+                        <span className="text-[10px] bg-fuchsia-500/20 text-fuchsia-300 px-2 py-0.5 rounded uppercase tracking-wider font-bold">
+                          Latest / Paid
+                        </span>
+                      ) : model === 'gemini-3.1-flash-lite-preview' ? (
+                        <span className="text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded uppercase tracking-wider font-bold">
+                          Latest / Free
+                        </span>
+                      ) : model.includes('pro') ? (
+                        <span className="text-[10px] bg-white/10 text-white/70 px-2 py-0.5 rounded uppercase tracking-wider font-bold">
+                          Premium
+                        </span>
+                      ) : (
+                        <span className="text-[10px] bg-yellow-500/10 text-yellow-500/70 px-2 py-0.5 rounded uppercase tracking-wider font-bold">
+                          Fast
+                        </span>
+                      )}
+                    </div>
+                  ))
+                )}
               </div>
             </motion.div>
             </>
