@@ -26,7 +26,7 @@ export default function ApiDashboard() {
   const [isKillSwitchActive, setIsKillSwitchActive] = useState(false);
   const [isDictationEnabled, setIsDictationEnabled] = useState(true);
   const [dictationModel, setDictationModel] = useState('gemini-2.5-flash');
-  const [apiProvider, setApiProvider] = useState<'google' | 'gemma'>('google');
+  const [apiProvider, setApiProvider] = useState<'google' | 'openrouter'>('openrouter');
   
   const [blockGlobal, setBlockGlobal] = useState(false);
   const [blockAssimilationTray, setBlockAssimilationTray] = useState(false);
@@ -125,7 +125,7 @@ export default function ApiDashboard() {
       setIsKillSwitchActive(config.kill_switch === true);
       setIsDictationEnabled(config.dictation_enabled !== false);
       setDictationModel(config.dictation_model || 'gemini-2.5-flash');
-      setApiProvider(config.api_provider || 'google');
+      setApiProvider(config.api_provider || 'openrouter');
       setBlockGlobal(config.block_global === true);
       setBlockAssimilationTray(config.block_assimilation_tray === true);
       setBlockChatDiscoveries(config.block_chat_discoveries === true);
@@ -403,7 +403,7 @@ export default function ApiDashboard() {
             <div 
                className={`absolute top-1 bottom-1 w-[calc(50%-4px)] bg-white/10 rounded-lg transition-all duration-300 ease-in-out ${apiProvider === 'google' ? 'left-1' : 'left-[calc(50%+2px)]'}`}
             />
-            {apiProvider === 'gemma' && (
+            {apiProvider === 'openrouter' && (
                <div className="absolute top-0 bottom-0 right-0 w-1/2 bg-indigo-500/20 blur-xl transition-all" />
             )}
             
@@ -414,21 +414,21 @@ export default function ApiDashboard() {
               <Server className="w-4 h-4 shrink-0" /> <span className="truncate">Gemini</span>
             </button>
             <button 
-              className={`relative z-10 w-1/2 flex items-center justify-center gap-2 py-2 text-[10px] md:text-xs font-bold uppercase tracking-wider transition-colors ${apiProvider === 'gemma' ? 'text-indigo-400 shadow-[0_0_10px_rgba(79,70,229,0.5)]' : 'text-white/40 hover:text-white/60'}`}
-              onClick={() => { setApiProvider('gemma'); setIsSaved(false); }}
+              className={`relative z-10 w-1/2 flex items-center justify-center gap-2 py-2 text-[10px] md:text-xs font-bold uppercase tracking-wider transition-colors ${apiProvider === 'openrouter' ? 'text-indigo-400 shadow-[0_0_10px_rgba(79,70,229,0.5)]' : 'text-white/40 hover:text-white/60'}`}
+              onClick={() => { setApiProvider('openrouter'); setIsSaved(false); }}
             >
-              <Activity className="w-4 h-4 shrink-0" /> <span className="truncate">MedGemma</span>
+              <Activity className="w-4 h-4 shrink-0" /> <span className="truncate">OpenRouter</span>
             </button>
           </div>
         </div>
 
-        {apiProvider === 'gemma' && activeAdminTab === 'general' && (
+        {apiProvider === 'openrouter' && activeAdminTab === 'general' && (
           <div className="bg-indigo-500/10 border border-indigo-500/30 rounded-xl p-4 flex items-start gap-4">
             <Activity className="w-6 h-6 text-indigo-400 shrink-0 mt-1" />
             <div>
-              <h3 className="font-bold text-indigo-200">Integración Railway (MedGemma 1.5)</h3>
+              <h3 className="font-bold text-indigo-200">OpenRouter Proxy Activado</h3>
               <p className="text-sm text-indigo-200/70 mt-1">
-                Todas las peticiones serán enrutadas a MedGemma. Las API Keys integradas del servidor no se usarán.
+                Todas las peticiones serán enrutadas a OpenRouter. Las API Keys integradas del servidor (10 en rotación de balanceo) tomarán el control absoluto. Tu llave maestra premium será usada si cambias.
               </p>
             </div>
           </div>
@@ -463,7 +463,6 @@ export default function ApiDashboard() {
           
           {/* Columna A: API / Modelos */}
           <div className="space-y-8">
-            {apiProvider === 'google' && (
             <>
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
@@ -473,12 +472,12 @@ export default function ApiDashboard() {
               <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 to-cyan-500" />
               <h2 className="text-lg font-bold flex items-center gap-2 mb-4">
                 <Key className="w-5 h-5 text-emerald-400" />
-                Gemini API Keys
+                Gemini / OR API Keys
               </h2>
               <p className="text-white/40 text-[11px] mb-6 font-mono leading-relaxed uppercase">
                 {apiProvider === 'google' 
                   ? "Registra múltiples llaves de Google Studio. El sistema rotará entre ellas (Load Balancing) para evitar bloqueos." 
-                  : "MedGemma está enrutado directamente sin API Keys en el panel frontal."}
+                  : "Las 10 llaves base de OpenRouter están compiladas. Puedes añadir llaves propias aquí si deseas."}
               </p>
 
               <div className="flex gap-2 mb-6">
@@ -500,7 +499,7 @@ export default function ApiDashboard() {
               <div className="space-y-2 max-h-40 overflow-y-auto custom-scrollbar">
                 {apiKeys.length === 0 ? (
                   <div className="text-center p-6 border border-dashed border-white/10 rounded-lg text-white/30 text-xs uppercase tracking-widest font-mono">
-                    {apiProvider === 'gemma' ? "No requiere llaves para este proveedor" : "No hay llaves. Se usará el .env"}
+                    {apiProvider === 'openrouter' ? "Usando 10 llaves internas del proxy" : "No hay llaves. Se usará el .env"}
                   </div>
                 ) : (
                   apiKeys.map((key, index) => (
@@ -587,7 +586,6 @@ export default function ApiDashboard() {
               </div>
             </motion.div>
             </>
-            )}
 
             {/* SECCIÓN GESTIÓN DE CÓDIGOS DE ACCESO */}
             <motion.div 
