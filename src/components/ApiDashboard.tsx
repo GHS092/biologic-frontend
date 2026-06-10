@@ -464,6 +464,7 @@ export default function ApiDashboard() {
           {/* Columna A: API / Modelos */}
           <div className="space-y-8">
             {apiProvider === 'google' && (
+            <>
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -585,6 +586,7 @@ export default function ApiDashboard() {
                 ))}
               </div>
             </motion.div>
+            </>
             )}
 
             {/* SECCIÓN GESTIÓN DE CÓDIGOS DE ACCESO */}
