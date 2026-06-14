@@ -578,14 +578,10 @@ export default function ApiDashboard() {
                 ) : apiProvider === 'nvidia' ? (
                   <div className="bg-[#76b900]/10 border border-[#76b900]/30 rounded-xl p-4">
                     <label className="text-[10px] text-[#76b900]/70 uppercase tracking-widest font-mono font-bold block mb-2">Modelo NVIDIA NIM</label>
-                    <input 
-                      type="text" 
-                      value={activeModel}
-                      onChange={(e) => { setActiveModel(e.target.value); setIsSaved(false); }}
-                      placeholder="Ej. google/gemma-4-31b-it"
-                      className="w-full bg-black/40 border border-[#76b900]/30 rounded-lg p-3 text-sm text-[#76b900] placeholder-[#76b900]/50 font-mono outline-none focus:border-[#76b900] transition-colors"
-                    />
-                    <p className="text-[10px] text-[#76b900]/50 mt-2 font-mono uppercase">Por defecto recomendamos: google/gemma-4-31b-it</p>
+                    <div className="w-full bg-black/40 border border-[#76b900]/30 rounded-lg p-3 text-sm text-[#76b900] font-mono">
+                      google/gemma-4-31b-it
+                    </div>
+                    <p className="text-[10px] text-[#76b900]/50 mt-2 font-mono uppercase">Este modelo está preconfigurado y optimizado para esta integración.</p>
                   </div>
                 ) : (
                   AVAILABLE_MODELS.map(model => (
