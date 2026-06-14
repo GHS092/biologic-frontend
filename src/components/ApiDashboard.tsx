@@ -398,26 +398,39 @@ export default function ApiDashboard() {
             </div>
           </div>
           
-          <div className="flex bg-black/40 border border-white/10 rounded-xl p-1 relative overflow-hidden items-center justify-between w-full md:w-64 shadow-2xl shrink-0">
+          <div className="flex bg-black/40 border border-white/10 rounded-xl p-1 relative overflow-hidden items-center justify-between w-full md:w-[22rem] shadow-2xl shrink-0">
             {/* The animated background highlight */}
             <div 
-               className={`absolute top-1 bottom-1 w-[calc(50%-4px)] bg-white/10 rounded-lg transition-all duration-300 ease-in-out ${apiProvider === 'google' ? 'left-1' : 'left-[calc(50%+2px)]'}`}
+               className={`absolute top-1 bottom-1 w-[calc(33.33%-4px)] bg-white/10 rounded-lg transition-all duration-300 ease-in-out ${
+                 apiProvider === 'google' ? 'left-1' : 
+                 apiProvider === 'openrouter' ? 'left-[calc(33.33%+2px)]' : 
+                 'left-[calc(66.66%+2px)]'
+               }`}
             />
             {apiProvider === 'openrouter' && (
-               <div className="absolute top-0 bottom-0 right-0 w-1/2 bg-indigo-500/20 blur-xl transition-all" />
+               <div className="absolute top-0 bottom-0 left-[33.33%] w-[33.33%] bg-indigo-500/20 blur-xl transition-all pointer-events-none" />
+            )}
+            {apiProvider === 'nvidia' && (
+               <div className="absolute top-0 bottom-0 right-0 w-[33.33%] bg-[#76b900]/20 blur-xl transition-all pointer-events-none" />
             )}
             
             <button 
-              className={`relative z-10 w-1/2 flex items-center justify-center gap-2 py-2 text-[10px] md:text-xs font-bold uppercase tracking-wider transition-colors ${apiProvider === 'google' ? 'text-emerald-400' : 'text-white/40 hover:text-white/60'}`}
+              className={`relative z-10 w-1/3 flex items-center justify-center gap-1 md:gap-2 py-2 text-[10px] md:text-xs font-bold uppercase tracking-wider transition-colors ${apiProvider === 'google' ? 'text-emerald-400' : 'text-white/40 hover:text-white/60'}`}
               onClick={() => { setApiProvider('google'); setIsSaved(false); }}
             >
-              <Server className="w-4 h-4 shrink-0" /> <span className="truncate">Gemini</span>
+              <Server className="w-3 h-3 md:w-4 md:h-4 shrink-0" /> <span className="truncate">Gemini</span>
             </button>
             <button 
-              className={`relative z-10 w-1/2 flex items-center justify-center gap-2 py-2 text-[10px] md:text-xs font-bold uppercase tracking-wider transition-colors ${apiProvider === 'openrouter' ? 'text-indigo-400 shadow-[0_0_10px_rgba(79,70,229,0.5)]' : 'text-white/40 hover:text-white/60'}`}
+              className={`relative z-10 w-1/3 flex items-center justify-center gap-1 md:gap-2 py-2 text-[10px] md:text-xs font-bold uppercase tracking-wider transition-colors ${apiProvider === 'openrouter' ? 'text-indigo-400 shadow-[0_0_10px_rgba(79,70,229,0.5)]' : 'text-white/40 hover:text-white/60'}`}
               onClick={() => { setApiProvider('openrouter'); setIsSaved(false); }}
             >
-              <Activity className="w-4 h-4 shrink-0" /> <span className="truncate">OpenRouter</span>
+              <Activity className="w-3 h-3 md:w-4 md:h-4 shrink-0" /> <span className="truncate">OpenRouter</span>
+            </button>
+            <button 
+              className={`relative z-10 w-1/3 flex items-center justify-center gap-1 md:gap-2 py-2 text-[10px] md:text-xs font-bold uppercase tracking-wider transition-colors ${apiProvider === 'nvidia' ? 'text-[#76b900] shadow-[0_0_10px_rgba(118,185,0,0.5)]' : 'text-white/40 hover:text-white/60'}`}
+              onClick={() => { setApiProvider('nvidia'); setIsSaved(false); }}
+            >
+              <Cpu className="w-3 h-3 md:w-4 md:h-4 shrink-0" /> <span className="truncate">NVIDIA</span>
             </button>
           </div>
         </div>
@@ -429,6 +442,18 @@ export default function ApiDashboard() {
               <h3 className="font-bold text-indigo-200">OpenRouter Proxy Activado</h3>
               <p className="text-sm text-indigo-200/70 mt-1">
                 Todas las peticiones serán enrutadas a OpenRouter. Las API Keys integradas del servidor (10 en rotación de balanceo) tomarán el control absoluto. Tu llave maestra premium será usada si cambias.
+              </p>
+            </div>
+          </div>
+        )}
+
+        {apiProvider === 'nvidia' && activeAdminTab === 'general' && (
+          <div className="bg-[#76b900]/10 border border-[#76b900]/30 rounded-xl p-4 flex items-start gap-4">
+            <Cpu className="w-6 h-6 text-[#76b900] shrink-0 mt-1" />
+            <div>
+              <h3 className="font-bold text-[#76b900]">NVIDIA NIM Activado</h3>
+              <p className="text-sm text-[#76b900]/70 mt-1">
+                Las peticiones serán enrutadas a NVIDIA Inference Microservices (NIM). Ideal para inferencia ultrarrápida usando infraestructura GPU acelerada de NVIDIA. Asegúrate de añadir tus llaves de NVIDIA (nvapi-...).
               </p>
             </div>
           </div>
