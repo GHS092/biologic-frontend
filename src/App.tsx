@@ -4954,9 +4954,9 @@ INSTRUCCIÓN: Borra la pizarra. Analiza nuevamente las imágenes adjuntas pero u
                         <div className="mb-6 bg-rose-500/10 border border-rose-500/30 rounded-md p-4 flex items-start gap-3">
                           <ShieldAlert className="w-5 h-5 text-rose-500 shrink-0 mt-0.5" />
                           <div>
-                            <h4 className="text-sm font-bold text-rose-600 dark:text-rose-400 uppercase tracking-widest mb-1">Aviso del Sistema</h4>
+                            <h4 className="text-sm font-bold text-rose-600 dark:text-rose-400 uppercase tracking-widest mb-1">Sugerencia del Sistema</h4>
                             <p className="text-xs text-gray-700 dark:text-gray-300">
-                              Se han detectado banderas rojas en este caso. La Junta Médica / Auditoría Red Team se activó automáticamente, pero <strong>no pudo completar su análisis</strong> (posible sobrecarga o timeout en los servidores de IA). Te recomendamos volver a analizar el caso en unos minutos.
+                              Se han detectado banderas rojas en este caso. Se recomienda encarecidamente activar el modo <strong>"Junta Médica / Auditoría Red Team"</strong> en el panel lateral y volver a analizar para obtener un escrutinio avanzado de omisiones y volumetría.
                             </p>
                           </div>
                         </div>
